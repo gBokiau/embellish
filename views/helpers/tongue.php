@@ -1,7 +1,7 @@
 <?php
 
 	// All of our syntaxes extend this file
-	require(App::pluginPath('Embellish') . 'libs' . DS . 'Syntax.php');
+	App::import('Lib', 'Embellish.Syntax');
 
 	/**
 	 * TongueHelper
@@ -104,8 +104,7 @@
 			} else {
 				$className = $this->_syntaxClass($syntax);
 				if (!class_exists($className)) {
-					// The class hasn't been brought in yet, do so now...
-					require($this->_syntaxFile($syntax));
+					App::import('Lib', 'Embellish.Syntaxes/'.$syntax);
 				}
 				return new $className;
 			}

@@ -16,7 +16,7 @@
 		 * @access public
 		 */
 		public function __construct() {
-			if (!App::import('Vendors', 'Embellish.markdown')) {
+			if (!App::import('Vendor', 'Embellish.markdown')) {
 				throw new RuntimeException(
 					get_class($this).' could not load our Markdown vendor library'
 				);

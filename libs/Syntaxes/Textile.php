@@ -22,7 +22,7 @@
 		 * @access public
 		 */
 		public function __construct() {
-			if (!App::import('Vendors', 'Embellish.textile')) {
+			if (!App::import('Vendor', 'Embellish.textile')) {
 				throw new RuntimeException(
 					get_class($this).' could not load our Textile vendor library'
 				);
