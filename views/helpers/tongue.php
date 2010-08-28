@@ -103,8 +103,11 @@
 				);
 			} else {
 				$className = $this->_syntaxClass($syntax);
-				if (!class_exists($className)) {
-					App::import('Lib', 'Embellish.Syntaxes/'.$syntax);
+				if (!class_exists($className) && !($path = App::import('Lib', 'Embellish.'.$syntax))) {
+					trigger_error(
+						'Could not find '.$className, 
+						E_USER_ERROR
+					);
 				}
 				return new $className;
 			}
@@ -127,7 +130,7 @@
 		 * @access protected
 		 */
 		protected function _syntaxFile($syntax = '') {
-			return $this->_syntaxDirectory() . $syntax . '.php';
+			return $this->_syntaxDirectory() . strtolower($syntax) . '.php';
 		}
 		
 		/**
@@ -136,7 +139,7 @@
 		 * @access protected
 		 */
 		protected function _syntaxDirectory() {
-			return App::pluginPath('Embellish') . 'libs' . DS . 'Syntaxes' . DS;
+			return App::pluginPath('Embellish') . 'libs' . DS . 'syntaxes' . DS;
 		}
 		
 		/**
