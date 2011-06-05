@@ -37,12 +37,7 @@
 		 */
 		public function __construct($syntax = '') {
 			if (!empty($syntax)) {
-				if (!$this->_syntaxExists($syntax)) {
-					// The requested syntax doesn't exist, throw a hissy fit
-					throw new InvalidArgumentException(
-						'The "'.$syntax.'" syntax doesn\'t exist'
-					);
-				} else {
+				if ($this->_syntaxExists($syntax)) {
 					// Lets set the requested syntax
 					$this->setSyntax($syntax);
 				}
@@ -83,9 +78,7 @@
 		 * @access public
 		 */
 		public function setSyntax($syntax = '') {
-			if (!$this->_syntaxExists($syntax)) {
-				return false;
-			} else {
+			if ($this->_syntaxExists($syntax)) {
 				$this->Syntax = $this->_getSyntax($syntax);
 			}
 		}
@@ -97,17 +90,10 @@
 		 * @access protected
 		 */
 		protected function _getSyntax($syntax = '') {
-			if (!$this->_syntaxExists($syntax)) {
-				throw new InvalidArgumentException(
-					'Cannot retrieve a syntax, "'.$syntax.'" that doesn\'t exist'
-				);
-			} else {
+			if ($this->_syntaxExists($syntax)) {
 				$className = $this->_syntaxClass($syntax);
 				if (!class_exists($className) && !($path = App::import('Lib', 'Embellish.'.$syntax))) {
-					trigger_error(
-						'Could not find '.$className, 
-						E_USER_ERROR
-					);
+					return $this->cakeError('error', array('message'=>'Class '.$className.' not declared.<br/>Tried at :'.$path));
 				}
 				return new $className;
 			}
@@ -120,7 +106,12 @@
 		 * @access protected
 		 */
 		protected function _syntaxExists($syntax = '') {
-			return file_exists($this->_syntaxFile($syntax));
+			$location = $this->_syntaxFile($syntax);
+			$found = file_exists($location);
+			if (!$found) {
+				return $this->cakeError('error', array('message'=>'Could not find syntax at '.$location));
+			}
+			return $found;
 		}
 		
 		/**
