@@ -1,7 +1,7 @@
 <?php
 
 	// All of our syntaxes extend this file
-	App::import('Lib', 'Embellish.Syntax');
+	App::uses('Syntax', 'Embellish.Lib');
 
 	/**
 	 * TongueHelper
@@ -10,7 +10,7 @@
 	 * can use the ::toHtml() method to echo it to the view.
 	 * @author Joe Beeson <jbeeson@gmail.com>
 	 */
-	class TongueHelper extends Object {
+	class TongueHelper extends AppHelper {
 		
 		/**
 		 * Heleprs
@@ -35,7 +35,8 @@
 		 * @return null
 		 * @access public
 		 */
-		public function __construct($syntax = '') {
+		public function __construct(View $View, $settings = array()) {
+			$syntax = current($settings);
 			if (!empty($syntax)) {
 				if (!$this->_syntaxExists($syntax)) {
 					// The requested syntax doesn't exist, throw a hissy fit
@@ -103,7 +104,7 @@
 				);
 			} else {
 				$className = $this->_syntaxClass($syntax);
-				if (!class_exists($className) && !($path = App::import('Lib', 'Embellish.'.$syntax))) {
+				if (!class_exists($className) && !(App::import('Lib/Syntax', 'Embellish.'.$className))) {
 					trigger_error(
 						'Could not find '.$className, 
 						E_USER_ERROR
@@ -130,7 +131,7 @@
 		 * @access protected
 		 */
 		protected function _syntaxFile($syntax = '') {
-			return $this->_syntaxDirectory() . strtolower($syntax) . '.php';
+			return  $this->_syntaxDirectory(). $this->_syntaxClass($syntax) . '.php';
 		}
 		
 		/**
@@ -139,7 +140,9 @@
 		 * @access protected
 		 */
 		protected function _syntaxDirectory() {
-			return App::pluginPath('Embellish') . 'libs' . DS . 'syntaxes' . DS;
+			$paths = App::path('Lib', 'Embellish');
+			return current($paths) . 'Syntax' . DS;
+			
 		}
 		
 		/**
@@ -149,7 +152,7 @@
 		 * @access protected
 		 */
 		protected function _syntaxClass($syntax = '') {
-			return 'Embellish_Syntaxes_' . $syntax;
+			return $syntax.'Syntax';
 		}
 		
 	}

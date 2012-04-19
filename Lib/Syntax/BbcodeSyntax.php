@@ -1,4 +1,5 @@
 <?php
+require_once current(App::path('Lib', 'Embellish')) . 'Syntax.php';
 
 	/**
 	 * Embellish_Syntaxes_Bbcode
@@ -7,7 +8,7 @@
 	 * @see http://en.wikipedia.org/wiki/BBCode
 	 * @author Joe Beeson <jbeeson@gmail.com>
 	 */
-	class Embellish_Syntaxes_Bbcode extends Embellish_Syntax {
+	class BbcodeSyntax extends Embellish_Syntax {
 		
 		/**
 		 * Converts our passed BBCode $string into HTML and returns it.

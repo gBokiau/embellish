@@ -1,4 +1,5 @@
 <?php
+require_once current(App::path('Lib', 'Embellish')) . 'Syntax.php';
 
 	/**
 	 * Embellish_Syntaxes_Markdown
@@ -8,7 +9,7 @@
 	 * @see http://daringfireball.net/projects/markdown/
 	 * @author Joe Beeson <jbeeson@gmail.com>
 	 */
-	class Embellish_Syntaxes_Markdown extends Embellish_Syntax {
+	class MarkdownSyntax extends Embellish_Syntax {
 		
 		/**
 		 * Construction method. Ensures our needed libraries are present.
@@ -16,7 +17,7 @@
 		 * @access public
 		 */
 		public function __construct() {
-			if (!App::import('Vendor', 'Embellish.markdown')) {
+			if (!App::import('Embellish.Vendor', 'markdown')) {
 				throw new RuntimeException(
 					get_class($this).' could not load our Markdown vendor library'
 				);

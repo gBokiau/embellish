@@ -1,4 +1,5 @@
 <?php
+	require_once current(App::path('Lib', 'Embellish')) . 'Syntax.php';
 
 	/**
 	 * Embellish_Syntaxes_Markdown
@@ -7,7 +8,7 @@
 	 * @see http://thresholdstate.com/
 	 * @author Joe Beeson <jbeeson@gmail.com>
 	 */
-	class Embellish_Syntaxes_Textile extends Embellish_Syntax {
+	class TextileSyntax extends Embellish_Syntax {
 		
 		/**
 		 * Holds our Textile object
@@ -22,7 +23,7 @@
 		 * @access public
 		 */
 		public function __construct() {
-			if (!App::import('Vendor', 'Embellish.textile')) {
+			if (!App::import('Embellish.Vendor', 'textile')) {
 				throw new RuntimeException(
 					get_class($this).' could not load our Textile vendor library'
 				);
@@ -35,8 +36,8 @@
 		 * @return string
 		 * @access public
 		 */
-		public function toHtml($string = '') {
-			return $this->_getTextile()->TextileThis($string);
+		public function toHtml($string = '', $lite = '', $encode = '', $noimage = '', $strict = '', $rel = '') {
+			return $this->_getTextile()->TextileThis($string, $lite = '', $encode = '', $noimage = '', $strict = '', $rel = '');
 		}
 		
 		/**
