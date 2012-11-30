@@ -155,4 +155,11 @@
 			return $syntax.'Syntax';
 		}
 		
+		public function widow($text) {
+			$pos = strrpos($text, " ");
+			if($pos !== false) {
+				$text = substr_replace($text, '&nbsp;', $pos, 1);
+			}
+			return $text;
+		}
 	}
